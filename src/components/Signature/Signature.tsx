@@ -34,7 +34,7 @@ export const Signature: React.FC<Props> = ({ setIsShowSign, onSave }) => {
   const [signatureText, setSignatureText] = useState('Signature');
   const [textType, setTextType] = useState<ITextType>(TEXT_VALUES[0]);
   const resizeCanvas = useCallback(() => {
-    console.log(canvasRef.current.offsetHeight, 'canvasRef.current.offsetHeight');
+    console.log(signaturePad, 'canvasRef.current.offsetHeight');
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
     canvasRef.current.width = canvasRef.current.offsetWidth * ratio;
     canvasRef.current.height = canvasRef.current.offsetHeight * ratio;
@@ -61,11 +61,11 @@ export const Signature: React.FC<Props> = ({ setIsShowSign, onSave }) => {
   }, [canvasRef.current]);
 
   const clearCanvas = () => {
-    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    signaturePad.clear(0, 0, canvasRef.current.width, canvasRef.current.height);
   };
 
   const saveImage = () => {
-    if (signatureText) {
+    if (signatureText && signaturePad.isEmpty()) {
       textToCanvas(signatureText);
     }
     const dataURL = signaturePad.toDataURL();
