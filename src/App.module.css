@@ -1,0 +1,27 @@
+.App {
+  text-align: center;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.signatureContainer {
+  width: 100%;
+  max-width: 600px;
+  height: 200px;
+  background-color: #a8bff8;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
