@@ -105,7 +105,7 @@
       return (this.minWidth + this.maxWidth) / 2;
     };
     this.penColor = opts.penColor || 'black';
-    this.backgroundColor = opts.backgroundColor || 'rgba(0,0,0,0)';
+    this.backgroundColor = opts.backgroundColor || 'transparent';
     this.onBegin = opts.onBegin;
     this.onEnd = opts.onEnd;
 
@@ -495,6 +495,10 @@
       }
     }
   };
+
+  SignaturePad.prototype.getPointsData = function () {
+    return this._data;
+  }
 
   SignaturePad.prototype._toSVG = function () {
     var _this2 = this;

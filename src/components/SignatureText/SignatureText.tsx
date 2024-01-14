@@ -27,19 +27,19 @@ export interface ITextType {
 export const TEXT_VALUES: ITextType[] = [
   {
     key: TEXT_TYPE.BRUSH,
-    font: '25px Brush Script MT, cursive'
+    font: '250px Brush Script MT, cursive'
   },
   {
     key: TEXT_TYPE.PAPYRUS,
-    font: '25px Papyrus, fantasy'
+    font: '250px Papyrus, fantasy'
   },
   {
     key: TEXT_TYPE.COURIER,
-    font: '25px Papyrus, fantasy'
+    font: '250px Courier New, monospace'
   },
   {
     key: TEXT_TYPE.TIMES,
-    font: '25px Times New Roman, serif'
+    font: '250px Times New Roman, serif'
   },
 ];
 

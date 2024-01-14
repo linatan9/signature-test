@@ -1,8 +1,8 @@
-import { Tabs, TabsProps, Button } from 'antd';
+import { Button, Tabs, TabsProps } from 'antd';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import SignaturePad from '../../signature_pad';
-import styles from './styles.module.css';
 import { ITextType, SignatureText, TEXT_VALUES } from '../SignatureText/SignatureText';
+import styles from './styles.module.css';
 
 enum SIGNATURE_TYPE {
   DRAW = '1',
@@ -34,26 +34,17 @@ export const Signature: React.FC<Props> = ({ setIsShowSign, onSave }) => {
   const [signatureText, setSignatureText] = useState('Signature');
   const [textType, setTextType] = useState<ITextType>(TEXT_VALUES[0]);
   const resizeCanvas = useCallback(() => {
-    console.log(signaturePad, 'canvasRef.current.offsetHeight');
     const ratio = Math.max(window.devicePixelRatio || 1, 1);
     canvasRef.current.width = canvasRef.current.offsetWidth * ratio;
-    canvasRef.current.height = canvasRef.current.offsetHeight * ratio;
+    const canvasHeight = canvasRef.current.offsetHeight * ratio;
+    canvasRef.current.height = canvasHeight === 0 ? 300 : canvasHeight;
     canvasRef.current.getContext("2d").scale(ratio, ratio);
     signaturePad?.clear();
   }, [canvasRef.current, signaturePad]);
 
   useEffect(() => {
-    ctx?.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    if (activeTab === SIGNATURE_TYPE.DRAW && signatureText && ctx) {
-      textToCanvas(signatureText);
-    }
-  }, [activeTab, signatureText, textType, ctx]);
-
-  useEffect(() => {
     if (canvasRef.current) {
-      const signaturePadNew = new SignaturePad(canvasRef.current, {
-        backgroundColor: 'rgb(255, 255, 255)'
-      });
+      const signaturePadNew = new SignaturePad(canvasRef.current);
       setSignaturePad(signaturePadNew);
       window.onresize = resizeCanvas;
       resizeCanvas();
@@ -61,12 +52,42 @@ export const Signature: React.FC<Props> = ({ setIsShowSign, onSave }) => {
   }, [canvasRef.current]);
 
   const clearCanvas = () => {
-    signaturePad.clear(0, 0, canvasRef.current.width, canvasRef.current.height);
+    signaturePad.clear();
   };
 
+  // const getTopBottomPoints = () => {
+  //   const points = signaturePad.getPointsData().flat(1);
+  //   let topLeftX;
+  //   let topLeftY;
+  //   let bottomRightX;
+  //   let bottomRightY;
+  //   if (points.length > 2) {
+  //     topLeftX = points[0].x;
+  //     topLeftY = points[0].y;
+  //     bottomRightX = points[1].x;
+  //     bottomRightY = points[1].y;
+  //     for (let i = 2; i < points.length - 1; i++) {
+  //       if (points[i].x < topLeftX) {
+  //         topLeftX = points[i].x;
+  //       }
+  //       if (points[i].y < topLeftY) {
+  //         topLeftY = points[i].y;
+  //       }
+  //       if (points[i].x > bottomRightX) {
+  //         bottomRightX = points[i].x;
+  //       }
+  //       if (points[i].y > bottomRightY) {
+  //         bottomRightY = points[i].x;
+  //       }
+  //     }
+  //   }
+  //   return { topLeft: { x: topLeftX, y: topLeftY }, bottomRight: { x: bottomRightX, y: bottomRightY } };
+  // }
+
   const saveImage = () => {
-    if (signatureText && signaturePad.isEmpty()) {
+    if (signatureText && activeTab === SIGNATURE_TYPE.TEXT) {
       textToCanvas(signatureText);
+      return;
     }
     const dataURL = signaturePad.toDataURL();
     onSave(dataURL);
@@ -75,10 +96,23 @@ export const Signature: React.FC<Props> = ({ setIsShowSign, onSave }) => {
   }
 
   const textToCanvas = (text: string) => {
-    const textWidth = ctx.measureText(text).width
-    ctx.font = textType.font;
-    clearCanvas();
-    ctx.fillText(text, canvasRef.current.width / 4 - (textWidth * 1.5), canvasRef.current.height / 4 + 12);
+    // @ts-ignore
+    const cloneCanvas: HTMLCanvasElement = document.getElementById('mainCanvas')?.cloneNode();
+    if (cloneCanvas) {
+      ctx.font = textType.font;
+      const measureText = ctx.measureText(text);
+      const textHeight = measureText.actualBoundingBoxAscent + measureText.actualBoundingBoxDescent;
+      cloneCanvas.width = measureText.width + 40;
+      cloneCanvas.height = textHeight + 50;
+      const cloneCtx = cloneCanvas.getContext("2d");
+      if (cloneCtx) {
+        cloneCtx.font = textType.font;
+        cloneCtx.textBaseline="top";
+        cloneCtx.fillText(text, 20, 0);
+        onSave(cloneCanvas.toDataURL());
+        cloneCanvas.remove();
+      }
+    }
   }
 
   return (
@@ -94,7 +128,7 @@ export const Signature: React.FC<Props> = ({ setIsShowSign, onSave }) => {
         />
       ) : null}
       <div className={styles.signaturePadBody}>
-        <canvas height={400} ref={canvasRef}></canvas>
+        <canvas id="mainCanvas" height={400} ref={canvasRef}></canvas>
       </div>
       <div className={styles.bottomActions}>
         <Button onClick={() => setIsShowSign(false)}>Close</Button>

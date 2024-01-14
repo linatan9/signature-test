@@ -18,9 +18,8 @@
 }
 
 .signatureContainer {
-  width: 100%;
-  max-width: 600px;
-  height: 200px;
+  width: 80vw;
+  height: 40vw;
   background-color: #a8bff8;
   cursor: pointer;
   margin-bottom: 20px;
