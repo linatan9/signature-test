@@ -76,7 +76,6 @@ body {
 }
 
 .signaturePadBody {
-  margin-top: 10px;
   position: relative;
   -webkit-box-flex: 1;
   -ms-flex: 1;
@@ -93,18 +92,4 @@ canvas {
   height: 100%;
   border-radius: 4px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.02) inset;
-}
-
-.inputWrapper {
-  margin: 10px 0;
-}
-
-.bottomActions {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-  button:first-child {
-    margin-right: 10px;
-  }
 }

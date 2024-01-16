@@ -11,20 +11,19 @@ function App() {
   }
 
   const onSave = (img: string) => {
-    console.log(img, 'img');
     setSignatureImage(img);
-    onChangeVisibility();
   };
   return (
     <div className={styles.container}>
       <Modal
+        closable={false}
         centered
         width="80%"
         open={isShowSign}
         okText="Save"
         footer={null}
       >
-        <Signature setIsShowSign={setIsShowSign} onSave={onSave} />
+        <Signature defaultSignature={'John Smith'} setIsShowSign={setIsShowSign} onSave={onSave} />
       </Modal>
       <div onClick={onChangeVisibility} className={styles.signatureContainer}>
         {signatureImage ? (

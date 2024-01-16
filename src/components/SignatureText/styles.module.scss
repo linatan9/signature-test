@@ -1,0 +1,82 @@
+.container {
+  margin: 10px 0;
+}
+.inputWrapper {
+  display: flex;
+  justify-content: center;
+  input {
+    width: 100%;
+  }
+}
+
+.inputContainer {
+  text-align: center;
+}
+
+.brush {
+  font-family: 'Brush Script MT', cursive;
+}
+
+.papyrus {
+  font-family: Copperplate, fantasy;
+}
+.courier {
+  font-family: 'Courier New', monospace;
+}
+
+.times {
+  font-family: 'Times New Roman', serif;
+}
+
+.groupContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background-color: #f0f3f9;
+}
+
+.radioWrapper {
+  //min-width: 50%;
+  width: 100%;
+  padding: 40px;
+  cursor: pointer;
+}
+
+.radioWrapper:hover {
+  background-color: white;
+}
+
+.mainFontSize {
+  font-size: 25px;
+}
+
+.signText {
+  padding: 5px 0;
+  color: #4d525d;
+}
+
+.clearSIgnWrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+
+@media (min-width: 800px) {
+  .radioWrapper {
+    width: 50%;
+  }
+  .groupContainer {
+    flex-direction: row;
+  }
+  .mainFontSize {
+    font-size: 30px;
+  }
+  .inputWrapper {
+    input {
+      width: 50%;
+    }
+  }
+}

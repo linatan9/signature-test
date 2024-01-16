@@ -1,7 +1,7 @@
-import { Input, Radio, Typography } from 'antd';
+import { Button, Input, Radio, Typography } from 'antd';
 import React, { useState } from 'react';
 
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 
 const { Text } = Typography;
 
@@ -22,24 +22,34 @@ export enum TEXT_TYPE {
 export interface ITextType {
   key: TEXT_TYPE,
   font: string;
+  fontSize: string;
+  fontFamily: string;
 }
 
 export const TEXT_VALUES: ITextType[] = [
   {
     key: TEXT_TYPE.BRUSH,
-    font: '250px Brush Script MT, cursive'
+    font: '250px Brush Script MT, cursive',
+    fontSize: '100px',
+    fontFamily: "'Brush Script MT', cursive",
   },
   {
     key: TEXT_TYPE.PAPYRUS,
-    font: '250px Papyrus, fantasy'
+    font: '250px Copperplate, fantasy',
+    fontSize: '100px',
+    fontFamily: "'Copperplate', fantasy",
   },
   {
     key: TEXT_TYPE.COURIER,
-    font: '250px Courier New, monospace'
+    font: '250px Courier New, monospace',
+    fontSize: '100px',
+    fontFamily: "'Courier New', monospace",
   },
   {
     key: TEXT_TYPE.TIMES,
-    font: '250px Times New Roman, serif'
+    font: '250px Times New Roman, serif',
+    fontSize: '100px',
+    fontFamily: "'Times New Roman', serif",
   },
 ];
 
@@ -50,19 +60,29 @@ export const SignatureText: React.FC<Props> = ({ value, onChange, textType, onCh
       onChangeTextType(typeValue);
     }
   };
-  console.log(textType.key, 'typeValue')
 
-
+  const clearSignature = () => {
+    onChange('');
+  }
   return (
     <div className={styles.container}>
-      <Input
-        className={`${styles[textType.key]} ${styles.mainFontSize} ${styles.inputContainer}`}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-      />
+      <div className={styles.inputWrapper}>
+        <Input
+          className={`${styles[textType.key]} ${styles.mainFontSize} ${styles.inputContainer}`}
+          value={value}
+          onChange={e => onChange(e.target.value)}
+        />
+      </div>
+      <div className={styles.clearSIgnWrapper}>
+        <Button className={styles.clearSignBtn} type="text" onClick={clearSignature}>Clear Signature</Button>
+      </div>
       <Radio.Group className={styles.groupContainer} value={textType.key}>
-        {TEXT_VALUES.map((type) => (
-          <div key={type.key} onClick={() => changeTextType(type.key)} className={styles.radioWrapper}>
+        {TEXT_VALUES.map((type, index) => (
+          <div
+            key={type.key}
+            onClick={() => changeTextType(type.key)}
+            className={styles.radioWrapper}
+          >
             <Radio value={type.key}>
               <Text className={`${styles[type.key]} ${styles.mainFontSize}`}>{value || 'Signature'}</Text>
             </Radio>
